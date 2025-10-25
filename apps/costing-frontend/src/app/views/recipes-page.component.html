@@ -1,0 +1,63 @@
+<!-- Recipes Page View -->
+<div class="recipes-page">
+  <h2>Recipes</h2>
+  <label for="recipe-select">Select Recipe:</label>
+  <select id="recipe-select" [value]="selectedRecipeId" (change)="onRecipeChange($event)">
+    <option *ngFor="let recipe of recipes" [value]="recipe.id">
+      {{ recipe.id === 'bcp-base-40cup' ? recipe.name : (recipe.name.replace(' (40 cups)', '')) }}
+    </option>
+  </select>
+
+  <ng-container *ngIf="recipes && recipes.length">
+    <ng-container *ngIf="selectedRecipeId">
+      <ng-container *ngFor="let recipe of recipes">
+        <ng-container *ngIf="recipe.id === selectedRecipeId">
+          <div class="card">
+            <h3>
+              {{ recipe.id === 'bcp-base-40cup' ? recipe.name : (recipe.name.replace(' (40 cups)', '')) }}
+            </h3>
+            <div *ngIf="recipe.lines && recipe.lines.length">
+                <h4>Ingredients</h4>
+                <table>
+                  <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                    <th>Cost (per cup)</th>
+                  </tr>
+                  <!-- Show base popcorn lines if recipe includes base popcorn -->
+                  <ng-container *ngIf="getBasePopcornLines(recipe).length">
+                    <tr *ngFor="let line of getBasePopcornLines(recipe)">
+                      <td>{{ getIngredientName(line.ingredientId) }} <span class="sub-label">(from Base Popcorn)</span></td>
+                      <td>{{ line.quantity }}</td>
+                      <td>{{ line.unit }}</td>
+                      <td>${{ getLineCost(line, recipe) | number:'1.2-2' }}</td>
+                    </tr>
+                  </ng-container>
+                  <!-- Show non-base lines -->
+                  <tr *ngFor="let line of getNonBaseLines(recipe)">
+                    <td>{{ getIngredientName(line.ingredientId) }}</td>
+                    <td>{{ line.quantity }}</td>
+                    <td>{{ line.unit }}</td>
+                    <td>${{ getLineCost(line, recipe) | number:'1.2-2' }}</td>
+                  </tr>
+                </table>
+            </div>
+            <div *ngIf="recipe.includes && recipe.includes.length">
+              <h4>Includes Sub-Recipes</h4>
+              <ul>
+                <li *ngFor="let inc of recipe.includes">
+                  {{ getRecipeName(inc.recipeId) }} (x{{ inc.multiplier }})
+                </li>
+              </ul>
+            </div>
+            <div *ngIf="recipe.packaging && recipe.packaging.enabled">
+              <h4>Packaging</h4>
+              <p>Bags: {{ recipe.packaging.bagCupSizes.join(', ') }}</p>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</div>

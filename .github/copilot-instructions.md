@@ -1,0 +1,17 @@
+- [x] Verify that the copilot-instructions.md file in the .github directory is created.
+
+- [x] Clarify Project Requirements
+  - Angular application using Material Design 3 (MD3) expressive components and styles
+  - Use legacy NgModule structure (non-standalone components)
+  - No Promise/async in templates; use RxJS hot observables for all data flows
+  - Four main views: Costing, Ingredients, Recipes, Recipe Editor
+  - Route wiring for all views in the Angular app
+  - All code and architecture decisions must be documented in README.md and relevant markdown files
+  - All items must be testable and lintable
+- [ ] Scaffold the Project
+- [ ] Customize the Project
+- [ ] Install Required Extensions
+- [ ] Compile the Project
+- [ ] Create and Run Task
+- [ ] Launch the Project
+- [ ] Ensure Documentation is Complete

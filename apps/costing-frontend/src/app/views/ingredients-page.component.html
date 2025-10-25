@@ -1,0 +1,27 @@
+<!-- Ingredients Page View -->
+<div class="ingredients-page">
+  <h2>Ingredients</h2>
+  <label for="recipe-select">Select Recipe:</label>
+  <select id="recipe-select" (change)="onRecipeChange($event)" [value]="selectedRecipeId">
+    <option *ngFor="let recipe of recipes" [value]="recipe.id">
+      {{ recipe.id === 'bcp-base-40cup' ? recipe.name : recipe.name.replace(' (40 cups)', '') }}
+    </option>
+  </select>
+
+  <div class="ingredients-list">
+  <h3>Ingredients for {{ selectedRecipeName }}</h3>
+    <table *ngIf="filteredIngredients.length > 0">
+      <tr>
+        <th>Name</th>
+        <th>Quantity</th>
+      </tr>
+      <tr *ngFor="let ingredient of filteredIngredients">
+        <td>{{ ingredient.name }}</td>
+        <td>{{ ingredient.quantity }}</td>
+      </tr>
+    </table>
+    <div *ngIf="filteredIngredients.length === 0">
+      <em>No ingredients for this recipe.</em>
+    </div>
+  </div>
+</div>
