@@ -1,7 +1,5 @@
 # RecipeCosting
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
-
 ✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
 
 [Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/angular-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
@@ -52,7 +50,7 @@ You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx 
 
 [Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
-## Set up CI!
+## Set up CI
 
 ### Step 1
 
@@ -92,18 +90,20 @@ Nx Console is an editor extension that enriches your developer experience. It le
 ## Best-Practice Architecture & Rules
 
 ### Nx Monorepo
+
 - All projects generated with Nx CLI; each lib in its own subfolder (feature/, data-access/, ui/, util/, api/, server/).
 - Every project must declare "tags" in project.json for module boundaries.
 - Dependency boundaries enforced with ESLint @nx/enforce-module-boundaries:
-	- apps:* → feature, data-access, ui, util, api
-	- feature → data-access, ui, util, api
-	- data-access → util, api
-	- ui → util
-	- api → util, api
-	- util → util
+  - apps:* → feature, data-access, ui, util, api
+  - feature → data-access, ui, util, api
+  - data-access → util, api
+  - ui → util
+  - api → util, api
+  - util → util
 - Only use Nx commands for build/lint/test/serve. CI: npx nx run-many -t lint test build --parallel=3.
 
 ### Angular (Traditional NgModules)
+
 - All Angular libraries use NgModule, not standalone.
 - App root uses AppModule with RouterModule.forRoot(...).
 - Feature modules use RouterModule.forChild(...) for lazy routes.
@@ -115,6 +115,7 @@ Nx Console is an editor extension that enriches your developer experience. It le
 - Color contrast WCAG AA, OnPush change detection, route-level lazy loading.
 
 ### NestJS
+
 - Layered modules: Infra (DB), Domain (ingredients/recipes/costing), Interface (controllers).
 - DTOs: class-based, with class-validator and class-transformer.
 - Global ValidationPipe({ whitelist: true, transform: true }).
@@ -125,6 +126,7 @@ Nx Console is an editor extension that enriches your developer experience. It le
 - Unit tests for services, e2e tests for controllers with in-memory Mongo.
 
 ### Material Design 3 (Expressive) UI
+
 - Vibrant palette, rounded corners (--radius:16px), soft elevation (--elev-1).
 - Typography: M3 defaults or custom scale.
 - Use Angular Material components for all controls.
@@ -135,6 +137,7 @@ Nx Console is an editor extension that enriches your developer experience. It le
 - No inline colors; use tokens and Material mixins.
 
 ### "Definition of Done" Checklists
+
 - Angular Feature: NgModule with RouterModule.forChild lazy route(s), Material components, responsive forms, OnPush, unit tests.
 - Nest Endpoint: DTO classes with validation, controller/service/model separation, unit/e2e tests, Swagger updated.
 - Library: tags, module boundary rules, public API via index.ts, no circular deps.
@@ -153,16 +156,16 @@ $brand-tertiary: #7B5800;
 $brand-error: #B3261E;
 
 $theme: mat.define-theme((
-	color: (
-		theme-type: light,
-		primary: $brand-primary,
-		secondary: $brand-secondary,
-		tertiary: $brand-tertiary,
-		error: $brand-error,
-	),
-	density: (
-		scale: -2 // Expressive: taller controls; set -2 (roomy) to 0 as needed
-	),
+ color: (
+  theme-type: light,
+  primary: $brand-primary,
+  secondary: $brand-secondary,
+  tertiary: $brand-tertiary,
+  error: $brand-error,
+ ),
+ density: (
+  scale: -2 // Expressive: taller controls; set -2 (roomy) to 0 as needed
+ ),
 ));
 
 @include mat.core();
@@ -178,6 +181,7 @@ Learn more:
 - [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
 And join the Nx community:
+
 - [Discord](https://go.nx.dev/community)
 - [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
 - [Our Youtube channel](https://www.youtube.com/@nxdevtools)

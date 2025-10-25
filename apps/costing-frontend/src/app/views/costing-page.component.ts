@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RECIPES } from '../mock-data';
+import { RecipeApiService } from '../recipe-api.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'bcp-costing-page',
@@ -8,8 +9,8 @@ import { RECIPES } from '../mock-data';
   standalone: false
 })
 export class CostingPageComponent implements OnInit {
-  recipes = RECIPES;
-  selectedRecipeId = RECIPES[0].id;
+  recipes: any[] = [];
+  selectedRecipeId: string = '';
   previewedRecipeId: string | null = null;
 
   // Mock costs for demonstration
@@ -31,7 +32,16 @@ export class CostingPageComponent implements OnInit {
     'vanilla-extract': 1.10
   };
 
-  ngOnInit() {}
+  constructor(private api: RecipeApiService) {}
+
+  ngOnInit() {
+    this.api.getRecipes().subscribe((data) => {
+      this.recipes = data;
+      if (data.length) {
+        this.selectedRecipeId = data[0].id;
+      }
+    });
+  }
 
   onRecipeChange(event: Event) {
     const select = event.target as HTMLSelectElement;

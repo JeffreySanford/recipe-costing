@@ -1,6 +1,6 @@
-import { RECIPES, INGREDIENTS } from '../mock-data';
 import { Component } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { RecipeApiService } from '../recipe-api.service';
 
 @Component({
   selector: 'app-ingredients-page',
@@ -9,13 +9,21 @@ import { BehaviorSubject } from 'rxjs';
   standalone: false
 })
 export class IngredientsPageComponent {
-  recipes = RECIPES;
-  ingredients = INGREDIENTS;
-
-  private selectedRecipeId$ = new BehaviorSubject<string>(RECIPES[0].id);
+  recipes: any[] = [];
+  ingredients: any[] = [];
+  private selectedRecipeId$ = new BehaviorSubject<string>('');
   filteredIngredients: Array<{ name: string; quantity: number; unit: string }> = [];
 
-  constructor() {
+  constructor(private api: RecipeApiService) {
+    this.api.getRecipes().subscribe((recipes) => {
+      this.recipes = recipes;
+      if (recipes.length) {
+        this.selectedRecipeId$.next(recipes[0].id);
+      }
+    });
+    this.api.getIngredients().subscribe((ingredients) => {
+      this.ingredients = ingredients;
+    });
     this.selectedRecipeId$.subscribe(recipeId => {
       const recipe = this.recipes.find(r => r.id === recipeId);
       let allLines = [...(recipe?.lines || [])];

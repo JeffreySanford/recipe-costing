@@ -1,0 +1,10 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "types": ["node"],
+    "module": "commonjs"
+  },
+  "include": ["../main.ts", "../app/**/*.ts", "../ingredients/**/*.ts", "../recipes/**/*.ts"],
+  "exclude": ["../app/**/*.spec.ts", "../ingredients/**/*.spec.ts", "../recipes/**/*.spec.ts", "node_modules", "dist", "test"]
+}

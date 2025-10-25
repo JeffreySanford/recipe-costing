@@ -1,6 +1,6 @@
+  // ...existing code...
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RECIPES } from '../mock-data';
+import { RecipeApiService } from '../recipe-api.service';
 
 @Component({
   selector: 'app-recipes-page',
@@ -9,6 +9,9 @@ import { RECIPES } from '../mock-data';
   styleUrls: ['./recipes-page.component.scss']
 })
 export class RecipesPageComponent implements OnInit {
+  recipes: any[] = [];
+  selectedRecipeId: string = '';
+
   // Helper: get total cups produced by a recipe (default 40 for base, else from includes)
   getTotalCups(recipe: any): number {
     if (recipe.id === 'bcp-base-40cup') return 40;
@@ -27,41 +30,39 @@ export class RecipesPageComponent implements OnInit {
     // Default mock cost
     return 1 * (line.quantity / this.getTotalCups(recipe));
   }
-  recipes = RECIPES;
-  selectedRecipeId = RECIPES[0].id;
 
-    /**
-     * Returns the selected recipe object
-     */
-    get selectedRecipe() {
-      return this.recipes.find(r => r.id === this.selectedRecipeId);
-    }
+  constructor(private api: RecipeApiService) {}
 
-    /**
-     * Returns the base popcorn line items for the selected recipe, if it includes base popcorn
-     */
-    getBasePopcornLines(recipe: any) {
-      if (!recipe.includes || !recipe.includes.length) return [];
-      const baseInc = recipe.includes.find((inc: any) => inc.recipeId === 'bcp-base-40cup');
-      if (!baseInc) return [];
-      const baseRecipe = this.recipes.find(r => r.id === 'bcp-base-40cup');
-      if (!baseRecipe) return [];
-      // Multiply base recipe lines by multiplier
-      return baseRecipe.lines.map(line => ({
-        ...line,
-        quantity: line.quantity * baseInc.multiplier
-      }));
-    }
+  ngOnInit() {
+    this.api.getRecipes().subscribe((data) => {
+      this.recipes = data;
+      if (data.length) {
+        this.selectedRecipeId = data[0].id;
+      }
+    });
+  }
 
-    /**
-     * Returns all non-base line items for the selected recipe
-     */
-    getNonBaseLines(recipe: any) {
-      if (!recipe.lines) return [];
-      return recipe.lines;
-    }
+  get selectedRecipe() {
+    return this.recipes.find(r => r.id === this.selectedRecipeId);
+  }
 
-  ngOnInit() {}
+  getBasePopcornLines(recipe: any) {
+    if (!recipe.includes || !recipe.includes.length) return [];
+    const baseInc = recipe.includes.find((inc: any) => inc.recipeId === 'bcp-base-40cup');
+    if (!baseInc) return [];
+    const baseRecipe = this.recipes.find(r => r.id === 'bcp-base-40cup');
+    if (!baseRecipe) return [];
+    // Multiply base recipe lines by multiplier
+    return baseRecipe.lines.map((line: any) => ({
+      ...line,
+      quantity: line.quantity * baseInc.multiplier
+    }));
+  }
+
+  getNonBaseLines(recipe: any) {
+    if (!recipe.lines) return [];
+    return recipe.lines;
+  }
 
   onRecipeChange(event: Event) {
     const select = event.target as HTMLSelectElement;
@@ -69,9 +70,8 @@ export class RecipesPageComponent implements OnInit {
   }
 
   getIngredientName(id: string): string {
-    // @ts-ignore
-    const ingredient = (window as any).INGREDIENTS?.find((i: any) => i.id === id);
-    return ingredient ? ingredient.name : id;
+    // This should be refactored to use an ingredient API if needed
+    return id.replace(/-/g, ' ');
   }
 
   getRecipeName(id: string): string {
@@ -79,3 +79,4 @@ export class RecipesPageComponent implements OnInit {
     return recipe ? recipe.name : id;
   }
 }
+
