@@ -10,15 +10,27 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@recipe-costing/ui-material": ["libs/ui-material/src/index.ts"]
+      "@recipe-costing/ui-material": [
+        "libs/ui-material/src/index.ts"
+      ]
     },
     "forceConsistentCasingInFileNames": true,
-    "strict": true
+    "strict": true,
+    "types": [
+      "jest",
+      "node"
+    ]
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

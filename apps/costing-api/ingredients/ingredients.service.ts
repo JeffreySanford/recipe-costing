@@ -1,1 +1,9 @@
-// ...existing code from apps/src/ingredients/ingredients.service.ts
+import { Injectable } from '@nestjs/common';
+import { INGREDIENTS } from '../app/mock-data';
+
+@Injectable()
+export class IngredientsService {
+	getAll() {
+		return INGREDIENTS;
+	}
+}

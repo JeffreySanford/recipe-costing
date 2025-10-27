@@ -8,13 +8,14 @@ describe('AppService', () => {
     const app = await Test.createTestingModule({
       providers: [AppService],
     }).compile();
-
     service = app.get<AppService>(AppService);
   });
 
-  describe('getData', () => {
-    it('should return "Hello API"', () => {
-      expect(service.getData()).toEqual({ message: 'Hello API' });
-    });
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+
+  it('should return correct data', () => {
+    expect(service.getData()).toEqual({ message: 'Hello API' });
   });
 });

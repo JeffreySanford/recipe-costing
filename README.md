@@ -1,4 +1,63 @@
-# RecipeCosting
+# Development Workflow
+
+## Running the Frontend
+
+From the workspace root:
+
+```bash
+npm run serve:frontend
+```
+
+## Running the Backend (NestJS)
+
+**Important:** Backend must be served from the `apps/costing-api` directory for the NestJS CLI to find its TypeScript config.
+
+```bash
+cd apps/costing-api
+npm run serve:costing-api
+```
+
+## Running Both Apps in Development
+
+Use two terminals:
+
+- Terminal 1 (workspace root):
+
+  ```bash
+  npm run serve:frontend
+  ```
+
+- Terminal 2 (`apps/costing-api`):
+
+  ```bash
+  npm run serve:costing-api
+  ```
+
+## Build, Lint, and Test All Projects
+
+From the workspace root:
+
+```bash
+npm run build:all
+npm run lint:all
+npm run test:all
+```
+
+## Nx Limitations (NestJS)
+
+- Nx `serve:all` cannot reliably serve the backend due to NestJS CLI config requirements.
+- Always run backend serve/build/test from `apps/costing-api` for best results.
+
+## CI/CD and Release
+
+- Use Nx run-many for build, lint, and test in CI workflows.
+- Document release and deployment steps in your CI config.
+
+## Security
+
+- Monitor GitHub security alerts and update dependencies as needed.
+
+## RecipeCosting
 
 ✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
 

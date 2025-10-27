@@ -1,20 +1,26 @@
 import { TestBed } from '@angular/core/testing';
-import { App } from './app';
-import { NxWelcome } from './nx-welcome';
+import { AppModule } from './app.module';
+import { ActivatedRoute } from '@angular/router';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [App, NxWelcome],
+      imports: [AppModule],
+      providers: [
+        { provide: ActivatedRoute, useValue: {} },
+      ],
     }).compileComponents();
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(App);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain(
-      'Welcome costing-frontend'
-    );
+  it('should create the app', () => {
+  const fixture = TestBed.createComponent((window as any).App || require('./app').App);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
+  });
+
+  it('should have title "costing-frontend"', () => {
+  const fixture = TestBed.createComponent((window as any).App || require('./app').App);
+    const app = fixture.componentInstance;
+    expect((app as any).title).toBe('costing-frontend');
   });
 });

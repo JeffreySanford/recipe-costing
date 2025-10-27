@@ -3,22 +3,19 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-  "serve:frontend": "nx serve costing-frontend",
-  "build:frontend": "nx build costing-frontend",
-  "test:frontend": "nx test costing-frontend",
-  "lint:frontend": "nx lint costing-frontend",
-
-  "serve:costing-api": "nest start --tsconfig apps/costing-api/tsconfig.json apps/costing-api/main.ts",
-  "serve:costing-api:watch": "nest start --watch --tsconfig apps/costing-api/tsconfig.json apps/costing-api/main.ts",
-  "build:costing-api": "nest build --tsconfig apps/costing-api/tsconfig.json apps/costing-api/main.ts",
-  "test:costing-api": "nx test costing-api",
-  "lint:costing-api": "nx lint costing-api",
-
-  "serve:all": "nx run-many --target=serve --projects=costing-frontend,costing-api --parallel",
-  "build:all": "nx run-many --target=build --all",
-  "test:all": "nx run-many --target=test --all",
-  "lint:all": "nx run-many --target=lint --all"
-
+    "serve:frontend": "nx serve costing-frontend",
+    "build:frontend": "nx build costing-frontend",
+    "test:frontend": "nx test costing-frontend",
+    "lint:frontend": "nx lint costing-frontend",
+    "serve:costing-api": "nest start --tsconfig apps/costing-api/tsconfig.json apps/costing-api/main.ts",
+    "serve:costing-api:watch": "nest start --watch --tsconfig apps/costing-api/tsconfig.json apps/costing-api/main.ts",
+    "build:costing-api": "nest build --tsconfig apps/costing-api/tsconfig.json apps/costing-api/main.ts",
+    "test:costing-api": "nx test costing-api",
+    "lint:costing-api": "nx lint costing-api",
+    "serve:all": "nx run-many --target=serve --projects=costing-frontend,costing-api --parallel",
+    "build:all": "nx run-many --target=build --all",
+    "test:all": "nx run-many --target=test --all",
+    "lint:all": "nx run-many --target=lint --all"
   },
   "private": true,
   "dependencies": {
@@ -71,7 +68,7 @@
     "@swc-node/register": "~1.9.1",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.14",
     "@types/node": "20.19.9",
     "@typescript-eslint/utils": "^8.40.0",
     "angular-eslint": "^20.3.0",
@@ -85,7 +82,7 @@
     "jest-util": "^29.7.0",
     "nx": "22.0.1",
     "prettier": "^2.6.2",
-    "ts-jest": "^29.1.0",
+    "ts-jest": "^29.4.5",
     "ts-node": "10.9.1",
     "tslib": "^2.3.0",
     "typescript": "~5.9.2",
