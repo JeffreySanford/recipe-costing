@@ -161,7 +161,6 @@ Nx Console is an editor extension that enriches your developer experience. It le
   - util → util
 - Only use Nx commands for build/lint/test/serve. CI: npx nx run-many -t lint test build --parallel=3.
 
-
 ### Angular (Classic NgModules, No Standalone)
 
 - **NO standalone components or APIs.** All components, directives, and pipes must be declared in NgModules.

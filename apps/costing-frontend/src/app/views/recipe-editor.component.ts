@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-// ...import RxJS, services, pipes, and other dependencies as needed
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-recipe-editor',
@@ -8,8 +6,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './recipe-editor.component.html',
   styleUrls: ['./recipe-editor.component.scss']
 })
-export class RecipeEditorComponent implements OnInit {
+export class RecipeEditorComponent {
   // Use RxJS hot observables for all data flows
   // ...component logic
-  ngOnInit() {}
 }

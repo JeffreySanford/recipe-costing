@@ -51,7 +51,7 @@
                 </li>
               </ul>
             </div>
-            <div *ngIf="recipe.packaging && recipe.packaging.enabled">
+            <div *ngIf="recipe.packaging && recipe.packaging.bagCupSizes && recipe.packaging.bagCupSizes.length">
               <h4>Packaging</h4>
               <p>Bags: {{ recipe.packaging.bagCupSizes.join(', ') }}</p>
             </div>

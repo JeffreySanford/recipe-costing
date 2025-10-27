@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { RecipeApiService } from '../recipe-api.service';
+import { RecipeApiService, Recipe, Ingredient } from '../recipe-api.service';
 
 @Component({
   selector: 'app-ingredients-page',
@@ -9,12 +9,14 @@ import { RecipeApiService } from '../recipe-api.service';
   standalone: false
 })
 export class IngredientsPageComponent {
-  recipes: any[] = [];
-  ingredients: any[] = [];
+  recipes: Recipe[] = [];
+  ingredients: Ingredient[] = [];
   private selectedRecipeId$ = new BehaviorSubject<string>('');
   filteredIngredients: Array<{ name: string; quantity: number; unit: string }> = [];
 
-  constructor(private api: RecipeApiService) {
+  private api = inject(RecipeApiService);
+
+  constructor() {
     this.api.getRecipes().subscribe((recipes) => {
       this.recipes = recipes;
       if (recipes.length) {
@@ -26,8 +28,7 @@ export class IngredientsPageComponent {
     });
     this.selectedRecipeId$.subscribe(recipeId => {
       const recipe = this.recipes.find(r => r.id === recipeId);
-      let allLines = [...(recipe?.lines || [])];
-      // If recipe includes sub-recipes, add their lines
+      const allLines: Array<{ ingredientId: string; quantity: number; unit: string }> = [...(recipe?.lines || [])];
       if (recipe?.includes) {
         for (const inc of recipe.includes) {
           const sub = this.recipes.find(r => r.id === inc.recipeId);
@@ -56,7 +57,7 @@ export class IngredientsPageComponent {
     });
   }
 
-  get selectedRecipeId() {
+  get selectedRecipeId(): string {
     return this.selectedRecipeId$.value;
   }
 

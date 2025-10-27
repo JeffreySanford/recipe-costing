@@ -1,4 +1,8 @@
-import nx from '@nx/eslint-plugin';
+import * as nx from '@nx/eslint-plugin';
+
+// Project Policy: NO standalone Angular components or APIs allowed.
+// This is enforced by Nx generators, documentation, and code review—not by a lint rule.
+// All Angular components, directives, and pipes must be declared in NgModules (classic structure).
 
 export default [
   ...nx.configs['flat/base'],

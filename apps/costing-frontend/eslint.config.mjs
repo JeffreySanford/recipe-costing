@@ -24,11 +24,8 @@ export default [
           style: 'kebab-case',
         },
       ],
-      // Enforce standalone: false for all components
-      '@angular-eslint/no-standalone-components': [
-        'error',
-        { requireStandaloneFalse: true }
-      ],
+      // Disable prefer-standalone to enforce classic NgModule architecture
+      '@angular-eslint/prefer-standalone': 'off',
     },
   },
   {

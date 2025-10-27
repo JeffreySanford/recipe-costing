@@ -1,6 +1,6 @@
   // ...existing code...
-import { Component, OnInit } from '@angular/core';
-import { RecipeApiService } from '../recipe-api.service';
+import { Component, OnInit, inject } from '@angular/core';
+import { RecipeApiService, Recipe } from '../recipe-api.service';
 
 @Component({
   selector: 'app-recipes-page',
@@ -9,29 +9,10 @@ import { RecipeApiService } from '../recipe-api.service';
   styleUrls: ['./recipes-page.component.scss']
 })
 export class RecipesPageComponent implements OnInit {
-  recipes: any[] = [];
-  selectedRecipeId: string = '';
+  recipes: Recipe[] = [];
+  selectedRecipeId = '';
 
-  // Helper: get total cups produced by a recipe (default 40 for base, else from includes)
-  getTotalCups(recipe: any): number {
-    if (recipe.id === 'bcp-base-40cup') return 40;
-    // If recipe includes base, use its multiplier * 40
-    const baseInc = recipe.includes?.find((inc: any) => inc.recipeId === 'bcp-base-40cup');
-    if (baseInc) return baseInc.multiplier * 40;
-    return 1; // fallback
-  }
-
-  // Helper: get per-cup cost for a line item (mock: $3/cup for base, $0.2/tsp for salt)
-  getLineCost(line: any, recipe: any): number {
-    // Example mock costs
-    if (line.ingredientId === 'kernels-yellow') return 3 * (line.quantity / this.getTotalCups(recipe));
-    if (line.ingredientId === 'oil-canola') return 3 * (line.quantity / this.getTotalCups(recipe));
-    if (line.ingredientId === 'salt-fine') return 0.2 * (line.quantity / this.getTotalCups(recipe));
-    // Default mock cost
-    return 1 * (line.quantity / this.getTotalCups(recipe));
-  }
-
-  constructor(private api: RecipeApiService) {}
+  private api = inject(RecipeApiService);
 
   ngOnInit() {
     this.api.getRecipes().subscribe((data) => {
@@ -42,24 +23,37 @@ export class RecipesPageComponent implements OnInit {
     });
   }
 
-  get selectedRecipe() {
+  get selectedRecipe(): Recipe | undefined {
     return this.recipes.find(r => r.id === this.selectedRecipeId);
   }
 
-  getBasePopcornLines(recipe: any) {
+  getTotalCups(recipe: Recipe): number {
+    if (recipe.id === 'bcp-base-40cup') return 40;
+    const baseInc = recipe.includes?.find((inc) => inc.recipeId === 'bcp-base-40cup');
+    if (baseInc) return baseInc.multiplier * 40;
+    return 1;
+  }
+
+  getLineCost(line: { ingredientId: string; quantity: number; unit: string }, recipe: Recipe): number {
+    if (line.ingredientId === 'kernels-yellow') return 3 * (line.quantity / this.getTotalCups(recipe));
+    if (line.ingredientId === 'oil-canola') return 3 * (line.quantity / this.getTotalCups(recipe));
+    if (line.ingredientId === 'salt-fine') return 0.2 * (line.quantity / this.getTotalCups(recipe));
+    return 1 * (line.quantity / this.getTotalCups(recipe));
+  }
+
+  getBasePopcornLines(recipe: Recipe): Array<{ ingredientId: string; quantity: number; unit: string }> {
     if (!recipe.includes || !recipe.includes.length) return [];
-    const baseInc = recipe.includes.find((inc: any) => inc.recipeId === 'bcp-base-40cup');
+    const baseInc = recipe.includes.find((inc) => inc.recipeId === 'bcp-base-40cup');
     if (!baseInc) return [];
     const baseRecipe = this.recipes.find(r => r.id === 'bcp-base-40cup');
     if (!baseRecipe) return [];
-    // Multiply base recipe lines by multiplier
-    return baseRecipe.lines.map((line: any) => ({
+    return (baseRecipe.lines ?? []).map((line: { ingredientId: string; quantity: number; unit: string }) => ({
       ...line,
       quantity: line.quantity * baseInc.multiplier
     }));
   }
 
-  getNonBaseLines(recipe: any) {
+  getNonBaseLines(recipe: Recipe): Array<{ ingredientId: string; quantity: number; unit: string }> {
     if (!recipe.lines) return [];
     return recipe.lines;
   }
@@ -70,7 +64,6 @@ export class RecipesPageComponent implements OnInit {
   }
 
   getIngredientName(id: string): string {
-    // This should be refactored to use an ingredient API if needed
     return id.replace(/-/g, ' ');
   }
 
