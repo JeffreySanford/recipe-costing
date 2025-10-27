@@ -1,4 +1,3 @@
-<!-- Costing Page View -->
 <div class="costing-page">
   <div class="wrap">
     <header>
@@ -52,5 +51,61 @@
           <p><strong>BCP Base Popcorn Cost:</strong> ${{ basePopcornCost }}</p>
         </div>
       </div>
+  </div>
+</div>
+<!-- Costing Page View -->
+<div class="costing-page">
+  <div class="wrap">
+    <header>
+      <h2>🍿 Costing Preview</h2>
+      <p>Select a recipe and generate its cost breakdown.</p>
+    </header>
+    <div class="row">
+      <label>
+        <span style="font-weight:600;color:#4f46e5;">Recipe</span>
+        <select [value]="selectedRecipeId" (change)="onRecipeChange($event)">
+          <option *ngFor="let recipe of recipes" [value]="recipe.id">{{ recipe.name.replace(' (40 cups)', '') }}</option>
+        </select>
+      </label>
+      <button (click)="onPreview()">Preview</button>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <h3>Totals</h3>
+        <p>Ingredients: <strong style="color:#22c55e;">${{ totalIngredientsCost.toFixed(2) }}</strong></p>
+        <p>Per Cup: <strong style="color:#f59e42;">${{ perCupCost.toFixed(2) }}</strong></p>
+      </div>
+      <div class="card">
+        <h3>Per-Bag Matrix</h3>
+        <table>
+          <tr><th>Bag (cups)</th><th>Cost</th></tr>
+          <tr *ngFor="let bag of bagMatrix">
+            <td>{{ bag.size }}</td>
+            <td style="color:#4f46e5;font-weight:600;">${{ bag.cost }}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Line Items</h3>
+      <table>
+        <tr>
+          <th>Ingredient</th>
+          <th>Qty</th>
+          <th>Unit</th>
+          <th>Line Cost (per cup)</th>
+        </tr>
+        <tr *ngFor="let item of lineItems">
+          <td style="color:#0ea5e9;">{{ item.name }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.unit }}</td>
+          <td style="color:#f59e42;">${{ item.cost }}</td>
+        </tr>
+      </table>
+      <div *ngIf="basePopcornCost">
+        <hr>
+        <p><strong style="color:#4f46e5;">BCP Base Popcorn Cost:</strong> <span style="color:#22c55e;">${{ basePopcornCost }}</span></p>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,4 +1,3 @@
-<!-- Ingredients Page View -->
 <div class="ingredients-page">
   <h2>Ingredients</h2>
   <label for="recipe-select">Select Recipe:</label>
@@ -22,6 +21,36 @@
     </table>
     <div *ngIf="filteredIngredients.length === 0">
       <em>No ingredients for this recipe.</em>
+    </div>
+  </div>
+</div>
+<!-- Ingredients Page View -->
+<div class="ingredients-page">
+  <div class="wrap">
+    <h2 style="color:#4f46e5;">🥣 Ingredients</h2>
+    <div class="row">
+      <label for="recipe-select" style="font-weight:600;color:#4f46e5;">Select Recipe:</label>
+      <select id="recipe-select" (change)="onRecipeChange($event)" [value]="selectedRecipeId">
+        <option *ngFor="let recipe of recipes" [value]="recipe.id">
+          {{ recipe.id === 'bcp-base-40cup' ? recipe.name : recipe.name.replace(' (40 cups)', '') }}
+        </option>
+      </select>
+    </div>
+    <div class="ingredients-list card">
+      <h3 style="color:#f59e42;">Ingredients for {{ selectedRecipeName }}</h3>
+      <table *ngIf="filteredIngredients.length > 0">
+        <tr>
+          <th>Name</th>
+          <th>Quantity</th>
+        </tr>
+        <tr *ngFor="let ingredient of filteredIngredients">
+          <td style="color:#0ea5e9;">{{ ingredient.name }}</td>
+          <td style="color:#22c55e;">{{ ingredient.quantity }}</td>
+        </tr>
+      </table>
+      <div *ngIf="filteredIngredients.length === 0">
+        <em style="color:#ef4444;">No ingredients for this recipe.</em>
+      </div>
     </div>
   </div>
 </div>
