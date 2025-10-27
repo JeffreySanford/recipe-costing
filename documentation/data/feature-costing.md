@@ -1,6 +1,7 @@
 # Feature Costing
 
-Angular feature module for recipe costing. Implements UI and logic for cost breakdowns, summaries, and calculations.
+
+Angular feature module for recipe costing. Implements UI and logic for cost breakdowns, summaries, and calculations. Uses classic NgModule structure (no standalone components). All data flows use RxJS hot observables.
 
 ## Key Features
 - Costing summary components

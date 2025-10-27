@@ -161,17 +161,21 @@ Nx Console is an editor extension that enriches your developer experience. It le
   - util → util
 - Only use Nx commands for build/lint/test/serve. CI: npx nx run-many -t lint test build --parallel=3.
 
-### Angular (Traditional NgModules)
 
-- All Angular libraries use NgModule, not standalone.
+### Angular (Classic NgModules, No Standalone)
+
+- **NO standalone components or APIs.** All components, directives, and pipes must be declared in NgModules.
 - App root uses AppModule with RouterModule.forRoot(...).
 - Feature modules use RouterModule.forChild(...) for lazy routes.
 - Use @angular/material with Material Design 3 (Expressive) tokens and density.
 - Global theme SCSS (see below) for vibrant colors, rounded corners, soft elevation, generous white space.
-- Mobile-first: fluid containers, breakpoints, touch targets ≥ 48x48dp.
+- Mobile-first: fluid containers, breakpoints, touch targets  48x48dp.
 - Data-access libs own HttpClient services; no direct HttpClient calls in components.
 - Provide API_BASE_URL injection token; use interceptors for base URL/auth.
 - Color contrast WCAG AA, OnPush change detection, route-level lazy loading.
+- **NO Promises or async/await in templates.** All data flows in templates must use RxJS hot observables (BehaviorSubject, ReplaySubject, or Subjects with shareReplay). Use the async pipe only with observables.
+- **NO direct use of Promises in services or components exposed to templates.** Convert all async data to RxJS observables at the boundary.
+- **Strict separation of concerns:** UI logic in components, data access in services, state management via RxJS.
 
 ### NestJS
 

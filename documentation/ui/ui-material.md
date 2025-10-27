@@ -1,6 +1,7 @@
 # UI Material
 
-Shared Angular Material components and theming for the workspace. Implements Material Design 3 (MD3) for a modern, mobile-first UI.
+
+Shared Angular Material components and theming for the workspace. Implements Material Design 3 (MD3) for a modern, mobile-first UI. All components are declared in NgModules (no standalone components).
 
 ## Key Features
 - Custom Angular Material components

@@ -8,8 +8,8 @@ This repository is an Nx monorepo for a recipe costing application. It includes 
 
 - **Angular Application**
   - Use Angular Material Design 3 (MD3) expressive components and styles throughout the UI.
-  - **Do NOT use standalone components or standalone APIs.** All components, directives, and pipes must be declared in NgModules (legacy structure).
-  - **Do NOT use Promises or async/await in templates.** All data flows in templates must use RxJS hot observables (e.g., BehaviorSubject, ReplaySubject, or Subjects with shareReplay). Use the `async` pipe only with observables.
+  - **Do NOT use standalone components or standalone APIs.** All components, directives, and pipes must be declared in NgModules (classic structure).
+  - **Do NOT use Promises or async/await in templates.** All data flows in templates must use RxJS hot observables (e.g., BehaviorSubject, ReplaySubject, or Subjects with shareReplay). Use the `async` pipe only with observables. No direct use of Promises in services or components exposed to templates.
   - **No direct use of Promises in services or components exposed to templates.** Convert all async data to RxJS observables at the boundary.
   - **No direct use of `async`/`await` in Angular templates.**
   - **Strict separation of concerns:**
