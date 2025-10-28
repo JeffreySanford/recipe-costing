@@ -1,0 +1,26 @@
+{
+  "name": "costing-backend",
+  "targets": {
+    "build": {
+      "executor": "@nx/node:build",
+      "options": {
+        "outputPath": "dist/apps/costing-backend",
+        "main": "apps/costing-backend/src/main.ts",
+        "tsConfig": "apps/costing-backend/tsconfig.json"
+      }
+    },
+    "serve": {
+      "executor": "@nx/node:execute",
+      "options": {
+        "buildTarget": "costing-backend:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["apps/costing-backend/src/**/*.ts"]
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,5 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { RecipeApiService, Recipe } from '../recipe-api.service';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-costing-page',
@@ -12,25 +14,10 @@ export class CostingPageComponent implements OnInit {
   selectedRecipeId = '';
   previewedRecipeId: string | null = null;
 
-  ingredientCosts: { [id: string]: number } = {
-    'kernels-yellow': 2.00,
-    'oil-canola': 0.50,
-    'salt-fine': 0.10,
-    'sugar-white': 1.00,
-    'butter': 1.50,
-    'caramel-syrup': 2.00,
-    'white-choc-coating': 2.50,
-    'candy-cane-crush': 1.25,
-    'bbq-seasoning': 0.75,
-    'brown-sugar': 0.80,
-    'smoked-paprika': 0.60,
-    'dill-seasoning': 0.90,
-    'citric-acid': 0.30,
-    'cheddar-powder': 2.20,
-    'vanilla-extract': 1.10
-  };
+  ingredientCosts$ = new BehaviorSubject<{ [id: string]: number }>({});
 
   private api = inject(RecipeApiService);
+  private http = inject(HttpClient);
 
   ngOnInit() {
     this.api.getRecipes().subscribe((data) => {
@@ -39,6 +26,8 @@ export class CostingPageComponent implements OnInit {
         this.selectedRecipeId = data[0].id;
       }
     });
+    this.http.get<{ [id: string]: number }>('/api/ingredient-costs')
+      .subscribe(costs => this.ingredientCosts$.next(costs));
   }
 
   onRecipeChange(event: Event) {
@@ -158,6 +147,10 @@ export class CostingPageComponent implements OnInit {
       total += this.ingredientCosts[line.ingredientId] * line.quantity * baseInc.multiplier;
     }
     return +total.toFixed(2);
+  }
+
+  get ingredientCosts(): { [id: string]: number } {
+    return this.ingredientCosts$.value;
   }
 
   getIngredientName(id: string): string {

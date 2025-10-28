@@ -1,74 +1,21 @@
 <div class="recipes-page">
-  <h2>Recipes</h2>
-  <label for="recipe-select">Select Recipe:</label>
-  <select id="recipe-select" [value]="selectedRecipeId" (change)="onRecipeChange($event)">
-    <option *ngFor="let recipe of recipes" [value]="recipe.id">
-      {{ recipe.id === 'bcp-base-40cup' ? recipe.name : (recipe.name.replace(' (40 cups)', '')) }}
-    </option>
-  </select>
-
-  <ng-container *ngIf="recipes && recipes.length">
-    <ng-container *ngIf="selectedRecipeId">
-      <ng-container *ngFor="let recipe of recipes">
-        <ng-container *ngIf="recipe.id === selectedRecipeId">
-          <div class="card">
-            <h3>
-              {{ recipe.id === 'bcp-base-40cup' ? recipe.name : (recipe.name.replace(' (40 cups)', '')) }}
-            </h3>
-            <div *ngIf="recipe.lines && recipe.lines.length">
-                <h4>Ingredients</h4>
-                <table>
-                  <tr>
-                    <th>Name</th>
-                    <th>Quantity</th>
-                    <th>Unit</th>
-                    <th>Cost (per cup)</th>
-                  </tr>
-                  <!-- Show base popcorn lines if recipe includes base popcorn -->
-                  <ng-container *ngIf="getBasePopcornLines(recipe).length">
-                    <tr *ngFor="let line of getBasePopcornLines(recipe)">
-                      <td>{{ getIngredientName(line.ingredientId) }} <span class="sub-label">(from Base Popcorn)</span></td>
-                      <td>{{ line.quantity }}</td>
-                      <td>{{ line.unit }}</td>
-                      <td>${{ getLineCost(line, recipe) | number:'1.2-2' }}</td>
-                    </tr>
-                  </ng-container>
-                  <!-- Show non-base lines -->
-                  <tr *ngFor="let line of getNonBaseLines(recipe)">
-                    <td>{{ getIngredientName(line.ingredientId) }}</td>
-                    <td>{{ line.quantity }}</td>
-                    <td>{{ line.unit }}</td>
-                    <td>${{ getLineCost(line, recipe) | number:'1.2-2' }}</td>
-                  </tr>
-                </table>
-            </div>
-            <div *ngIf="recipe.includes && recipe.includes.length">
-              <h4>Includes Sub-Recipes</h4>
-              <ul>
-                <li *ngFor="let inc of recipe.includes">
-                  {{ getRecipeName(inc.recipeId) }} (x{{ inc.multiplier }})
-                </li>
-              </ul>
-            </div>
-            <div *ngIf="recipe.packaging && recipe.packaging.bagCupSizes && recipe.packaging.bagCupSizes.length">
-              <h4>Packaging</h4>
-              <p>Bags: {{ recipe.packaging.bagCupSizes.join(', ') }}</p>
-            </div>
-          </div>
-        </ng-container>
-      </ng-container>
-    </ng-container>
-  </ng-container>
-</div>
-<!-- Recipes Page View -->
-<div class="recipes-page">
   <div class="wrap">
-    <h2 style="color:#4f46e5;">📖 Recipes</h2>
+    <h2 style="color: #4f46e5">📖 Recipes</h2>
     <div class="row">
-      <label for="recipe-select" style="font-weight:600;color:#4f46e5;">Select Recipe:</label>
-      <select id="recipe-select" [value]="selectedRecipeId" (change)="onRecipeChange($event)">
+      <label for="recipe-select" style="font-weight: 600; color: #4f46e5"
+        >Select Recipe:</label
+      >
+      <select
+        id="recipe-select"
+        [value]="selectedRecipeId"
+        (change)="onRecipeChange($event)"
+      >
         <option *ngFor="let recipe of recipes" [value]="recipe.id">
-          {{ recipe.id === 'bcp-base-40cup' ? recipe.name : (recipe.name.replace(' (40 cups)', '')) }}
+          {{
+            recipe.id === 'bcp-base-40cup'
+              ? recipe.name
+              : recipe.name.replace(' (40 cups)', '')
+          }}
         </option>
       </select>
     </div>
@@ -77,45 +24,69 @@
         <ng-container *ngFor="let recipe of recipes">
           <ng-container *ngIf="recipe.id === selectedRecipeId">
             <div class="card">
-              <h3 style="color:#f59e42;">
-                {{ recipe.id === 'bcp-base-40cup' ? recipe.name : (recipe.name.replace(' (40 cups)', '')) }}
+              <h3 style="color: #f59e42">
+                {{
+                  recipe.id === 'bcp-base-40cup'
+                    ? recipe.name
+                    : recipe.name.replace(' (40 cups)', '')
+                }}
               </h3>
               <div *ngIf="recipe.lines && recipe.lines.length">
-                  <h4 style="color:#0ea5e9;">Ingredients</h4>
-                  <table>
-                    <tr>
-                      <th>Name</th>
-                      <th>Quantity</th>
-                      <th>Unit</th>
-                      <th>Cost (per cup)</th>
-                    </tr>
-                    <ng-container *ngIf="getBasePopcornLines(recipe).length">
-                      <tr *ngFor="let line of getBasePopcornLines(recipe)">
-                        <td style="color:#0ea5e9;">{{ getIngredientName(line.ingredientId) }} <span class="sub-label">(from Base Popcorn)</span></td>
-                        <td style="color:#22c55e;">{{ line.quantity }}</td>
-                        <td>{{ line.unit }}</td>
-                        <td style="color:#f59e42;">${{ getLineCost(line, recipe) | number:'1.2-2' }}</td>
-                      </tr>
-                    </ng-container>
-                    <tr *ngFor="let line of getNonBaseLines(recipe)">
-                      <td style="color:#0ea5e9;">{{ getIngredientName(line.ingredientId) }}</td>
-                      <td style="color:#22c55e;">{{ line.quantity }}</td>
+                <h4 style="color: #0ea5e9">Ingredients</h4>
+                <table>
+                  <tr>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Unit</th>
+                    <th>Cost (per cup)</th>
+                  </tr>
+                  <ng-container *ngIf="getBasePopcornLines(recipe).length">
+                    <tr *ngFor="let line of getBasePopcornLines(recipe)">
+                      <td style="color: #0ea5e9">
+                        {{ getIngredientName(line.ingredientId) }}
+                        <span class="sub-label">(from Base Popcorn)</span>
+                      </td>
+                      <td style="color: #22c55e">{{ line.quantity }}</td>
                       <td>{{ line.unit }}</td>
-                      <td style="color:#f59e42;">${{ getLineCost(line, recipe) | number:'1.2-2' }}</td>
+                      <td style="color: #f59e42">
+                        ${{ getLineCost(line, recipe) | number : '1.2-2' }}
+                      </td>
                     </tr>
-                  </table>
+                  </ng-container>
+                  <tr *ngFor="let line of getNonBaseLines(recipe)">
+                    <td style="color: #0ea5e9">
+                      {{ getIngredientName(line.ingredientId) }}
+                    </td>
+                    <td style="color: #22c55e">{{ line.quantity }}</td>
+                    <td>{{ line.unit }}</td>
+                    <td style="color: #f59e42">
+                      ${{ getLineCost(line, recipe) | number : '1.2-2' }}
+                    </td>
+                  </tr>
+                </table>
               </div>
               <div *ngIf="recipe.includes && recipe.includes.length">
-                <h4 style="color:#0ea5e9;">Includes Sub-Recipes</h4>
+                <h4 style="color: #0ea5e9">Includes Sub-Recipes</h4>
                 <ul>
                   <li *ngFor="let inc of recipe.includes">
-                    <span style="color:#4f46e5;">{{ getRecipeName(inc.recipeId) }}</span> <span style="color:#f59e42;">(x{{ inc.multiplier }})</span>
+                    <span style="color: #4f46e5">{{
+                      getRecipeName(inc.recipeId)
+                    }}</span>
+                    <span style="color: #f59e42">(x{{ inc.multiplier }})</span>
                   </li>
                 </ul>
               </div>
-              <div *ngIf="recipe.packaging && recipe.packaging.bagCupSizes && recipe.packaging.bagCupSizes.length">
-                <h4 style="color:#0ea5e9;">Packaging</h4>
-                <p style="color:#f59e42;">Bags: {{ recipe.packaging.bagCupSizes.join(', ') }}</p>
+              <div
+                *ngIf="
+                  recipe.packaging &&
+                  recipe.packaging.bagCupSizes &&
+                  recipe.packaging.bagCupSizes.length
+                "
+              >
+                <h4 style="color: #0ea5e9">Packaging</h4>
+                <p style="color: #f59e42">
+                  Bags: {{ recipe.packaging.bagCupSizes.join(', ') }}
+                </p>
               </div>
             </div>
           </ng-container>
