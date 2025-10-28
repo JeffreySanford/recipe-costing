@@ -10,6 +10,36 @@ import { BehaviorSubject } from 'rxjs';
   standalone: false
 })
 export class CostingPageComponent implements OnInit {
+  get ingredientTotals(): Array<{ name: string; quantity: number; unit: string }> {
+    const recipe = this.activeRecipe;
+    if (!recipe) return [];
+    const totals: Array<{ name: string; quantity: number; unit: string }> = [];
+
+    // Helper to accumulate ingredient quantities
+    const addOrUpdate = (id: string, qty: number, unit: string) => {
+      const idx = totals.findIndex(t => t.name === this.getIngredientName(id) && t.unit === unit);
+      if (idx >= 0) {
+        totals[idx].quantity += qty;
+      } else {
+        totals.push({ name: this.getIngredientName(id), quantity: qty, unit });
+      }
+    };
+
+    if (recipe.includes) {
+      for (const inc of recipe.includes) {
+        const sub = this.recipes.find((r) => r.id === inc.recipeId);
+        if (sub) {
+          for (const line of sub.lines || []) {
+            addOrUpdate(line.ingredientId, line.quantity * (inc.multiplier || 1), line.unit);
+          }
+        }
+      }
+    }
+    for (const line of recipe.lines || []) {
+      addOrUpdate(line.ingredientId, line.quantity, line.unit);
+    }
+    return totals;
+  }
   recipes: Recipe[] = [];
   selectedRecipeId = '';
   previewedRecipeId: string | null = null;
@@ -76,17 +106,21 @@ export class CostingPageComponent implements OnInit {
 
   get bagMatrix(): Array<{ size: number; cost: number }> {
     const recipe = this.activeRecipe;
-    if (!recipe || !recipe.packaging) return [];
-    return (recipe.packaging?.bagCupSizes ?? []).map((size: number) => ({
+    if (!recipe) return [];
+    // Always show these sizes
+    const defaultSizes = [3, 4, 6, 18, 40];
+    // Use recipe sizes if present, else default
+    const sizes = Array.from(new Set([...(recipe.packaging?.bagCupSizes ?? []), ...defaultSizes])).sort((a, b) => a - b);
+    return sizes.map((size: number) => ({
       size,
-      cost: +(this.totalIngredientsCost * (size / Math.max(...(recipe.packaging?.bagCupSizes ?? [1])))).toFixed(2)
+      cost: +(this.perCupCost * size).toFixed(2)
     }));
   }
 
-  get lineItems(): Array<{ name: string; quantity: number; unit: string; cost: number }> {
+  get lineItems(): Array<{ name: string; quantity: number; unit: string; perCup: number; cost: number }> {
     const recipe = this.activeRecipe;
     if (!recipe) return [];
-    const items: Array<{ name: string; quantity: number; unit: string; cost: number }> = [];
+    const items: Array<{ name: string; quantity: number; unit: string; perCup: number; cost: number }> = [];
 
     const getTotalCups = (r: Recipe) => {
       if (r.id === 'bcp-base-40cup') return 40;
@@ -109,6 +143,7 @@ export class CostingPageComponent implements OnInit {
             name: 'BCP Base Popcorn (per cup)',
             quantity: 1,
             unit: 'cup',
+            perCup: 1,
             cost: costPerCup
           });
         } else if (sub) {
@@ -117,6 +152,7 @@ export class CostingPageComponent implements OnInit {
               name: this.getIngredientName(line.ingredientId) + ` (from ${this.getRecipeDisplayName(sub)})`,
               quantity: line.quantity * inc.multiplier,
               unit: line.unit,
+              perCup: +(line.quantity * inc.multiplier / totalCups).toFixed(2),
               cost: +(this.ingredientCosts[line.ingredientId] * line.quantity * inc.multiplier / totalCups).toFixed(2)
             });
           }
@@ -129,6 +165,7 @@ export class CostingPageComponent implements OnInit {
         name: this.getIngredientName(line.ingredientId),
         quantity: line.quantity,
         unit: line.unit,
+        perCup: +(line.quantity / totalCups).toFixed(2),
         cost: +(this.ingredientCosts[line.ingredientId] * line.quantity / totalCups).toFixed(2)
       });
     }

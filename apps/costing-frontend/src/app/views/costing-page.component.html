@@ -16,7 +16,15 @@
     <div class="grid">
       <div class="card">
         <h3>Totals</h3>
-        <p>Ingredients: <strong class="text-green">{{ totalIngredientsCost | currency:'USD':'symbol':'1.2-2' }}</strong></p>
+        <table>
+          <tr><th>Ingredient</th><th>Total Qty</th><th>Unit</th></tr>
+          <tr *ngFor="let ing of ingredientTotals">
+            <td>{{ ing.name }}</td>
+            <td>{{ ing.quantity }}</td>
+            <td>{{ ing.unit }}</td>
+          </tr>
+        </table>
+        <p class="mt-2">Total Cost: <strong class="text-green">{{ totalIngredientsCost | currency:'USD':'symbol':'1.2-2' }}</strong></p>
         <p>Per Cup: <strong class="text-orange">{{ perCupCost | currency:'USD':'symbol':'1.2-2' }}</strong></p>
       </div>
       <div class="card">
@@ -35,14 +43,16 @@
       <table>
         <tr>
           <th>Ingredient</th>
-          <th>Qty</th>
+          <th>Total Qty</th>
           <th>Unit</th>
+          <th>Qty Per Cup</th>
           <th>Line Cost (per cup)</th>
         </tr>
         <tr *ngFor="let item of lineItems">
           <td class="text-blue">{{ item.name }}</td>
           <td>{{ item.quantity }}</td>
           <td>{{ item.unit }}</td>
+          <td>{{ item.perCup }}</td>
           <td class="text-orange">{{ item.cost | currency:'USD':'symbol':'1.2-2' }}</td>
         </tr>
       </table>
